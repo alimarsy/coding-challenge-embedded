@@ -92,7 +92,7 @@ void circular_buf_put(buffer_t *cbuf, uint8_t data) {
     advance_pointer(cbuf);
 }
 
-int circular_buf_get(buffer_t cbuf, uint8_t data) {
+int circular_buf_get(buffer_t *cbuf, uint8_t *data) {
     int r = -1;
     while (circular_buf_is_empty(cbuf)) {
         //vTaskDelay(1);
@@ -183,7 +183,7 @@ void challenge_run()
             circular_buf_get(buffer, bytes+1);
             circular_buf_get(buffer, bytes+2);
             circular_buf_get(buffer, bytes+3);
-            console_print("got Add command (%d + %d)\n", bytes[0]  256 + bytes[1], bytes[2]  256 + bytes[3]);
+            console_print("got Add command (%d + %d)\n", bytes[0] * 256 + bytes[1], bytes[2] * 256 + bytes[3]);
             
             uint16_t res = (bytes[0] + bytes[2]) * 256 + bytes[1] + bytes[3];
             uint8_t result[] = { 0x32, res >> 8, res };
